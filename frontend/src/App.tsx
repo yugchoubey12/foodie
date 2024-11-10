@@ -1,49 +1,18 @@
-import { Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { UILoader } from "./components/loaders";
-import { DashboardLayout } from "./layouts/dashboard";
-import { AddRecipe, Home, More, MyRecipes } from "./pages/Dashboard";
-import { ErrorPage } from "./pages/Error";
-import { Landing } from "./pages/Landing";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Landing from './pages/Landing';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';  // You can create this later
 
-function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Landing />,
-      errorElement: <ErrorPage />,
-    },
-
-    {
-      path: "/dashboard",
-      element: <DashboardLayout />,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-          path: "/dashboard/",
-          element: <Home />,
-        },
-        {
-          path: "/dashboard/addrecipe",
-          element: <AddRecipe />,
-        },
-        {
-          path: "/dashboard/myrecipes",
-          element: <MyRecipes />,
-        },
-        {
-          path: "/dashboard/recipe/:id",
-          element: <More />,
-        },
-      ],
-    },
-  ]);
+const App = () => {
   return (
-    <div className="container h-[100vh] w-[100vw]">
-      <Suspense fallback={<UILoader />}>
-        <RouterProvider router={router} fallbackElement={<UILoader />} />
-      </Suspense>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
 }
 
