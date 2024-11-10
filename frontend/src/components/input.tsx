@@ -1,25 +1,30 @@
-import React, { FormEvent } from "react";
+// frontend/src/components/Input.tsx
+import React from "react";
 
-export const Input = ({
-  type,
+type InputProps = {
+  name: string;
+  placeholder: string;
+  handleChange: React.ChangeEventHandler<HTMLInputElement>;
+  type: string;
+  className?: string;
+};
+
+const Input: React.FC<InputProps> = ({
+  name,
   placeholder,
   handleChange,
+  type,
   className,
-  ...rest
-}: {
-  type: string;
-  placeholder: string;
-  handleChange: (e: FormEvent<HTMLInputElement>) => void;
-  className: string;
-  [key: string]: unknown;
 }) => {
   return (
     <input
-      {...rest}
       type={type}
+      name={name}
       placeholder={placeholder}
       onChange={handleChange}
-      className={className}
+      className={`p-2 rounded-lg focus:outline-none ${className}`}
     />
   );
 };
+
+export default Input;
