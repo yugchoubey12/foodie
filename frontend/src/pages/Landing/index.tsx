@@ -1,10 +1,12 @@
-import React, { FormEvent, useState, useContext, useLayoutEffect } from "react";
+// frontend/src/pages/Landing/index.tsx
+import React, { useLayoutEffect, useState, useContext, FormEvent } from "react";
 import { Input, Form, Button } from "../../components";
 import recipeOne from "../../assets/recipe-one.jpg";
-import { validateEmail } from "../../utils";
-import { AuthenticationContext } from "../../context"; // Import the context
-import cogoToast from "cogo-toast";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../context";
+import { AUTH_TYPE } from "../../@types";
+import cogoToast from "cogo-toast";
+import { validateEmail } from "../../utils";
 
 type _STATE = {
   email: string;
@@ -13,18 +15,16 @@ type _STATE = {
 
 export const Landing = () => {
   const navigate = useNavigate();
-  const { loading, onLogin } = useContext(AuthenticationContext);
 
-  const [state, setState] = useState<_STATE>({ email: "", password: "" });
-
+  // Redirect to dashboard if already logged in
   useLayoutEffect(() => {
-    if (
-      !!sessionStorage.getItem("token") &&
-      !!sessionStorage.getItem("email")
-    ) {
+    if (sessionStorage.getItem("token") && sessionStorage.getItem("email")) {
       navigate("/dashboard");
     }
   }, [navigate]);
+
+  const { loading, onLogin } = useContext(AuthenticationContext) as AUTH_TYPE;
+  const [state, setState] = useState<_STATE>({ email: "", password: "" });
 
   const handleState = (e: FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -37,21 +37,16 @@ export const Landing = () => {
       return cogoToast.error("Invalid email");
     }
     if (!state.password) {
-      return cogoToast.error("Please provide a password");
+      return cogoToast.error("Please provide password");
     }
-    await onLogin(state); // Call the onLogin from context
+    await onLogin(state);
   };
 
   return (
-    <div className="container bg-black text-white h-[100%] flex flex-col-reverse md:flex-row w-full">
-      <Form
-        className="flex items-center justify-center w-full h-full p-10"
-        onSubmit={handleSubmit}
-      >
+    <div className="container bg-black text-white h-full flex flex-col-reverse md:flex-row w-full">
+      <Form className="flex items-center justify-center w-full h-full p-10" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-2 w-full md:w-[50%]">
-          <h2 className="text-orange-500 font-extrabold text-xl underline underline-offset-4">
-            Foodie
-          </h2>
+          <h2 className="text-orange-500 font-extrabold text-xl underline underline-offset-4">Foodie</h2>
           <Input
             name="email"
             placeholder="Email"
@@ -76,6 +71,7 @@ export const Landing = () => {
           </div>
         </div>
       </Form>
+
       <div className="w-full h-full saturate-200">
         <img
           src={recipeOne}
