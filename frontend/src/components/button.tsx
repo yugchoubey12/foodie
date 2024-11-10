@@ -1,22 +1,31 @@
-export const Button = ({
-  title,
-  handleClick,
-  className,
-  type,
-}: {
+// frontend/src/components/Button.tsx
+import React from "react";
+
+type ButtonProps = {
   title: string;
-  handleClick?: () => void;
-  className: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  className?: string;
   type?: "button" | "submit" | "reset";
-  [key: string]: unknown;
+  disabled?: boolean;
+};
+
+const Button: React.FC<ButtonProps> = ({
+  title,
+  onClick,
+  className,
+  type = "button",
+  disabled = false,
 }) => {
   return (
     <button
-      className={className}
-      onClick={handleClick}
-      type={`${type ? type : "button"}`}
+      type={type}
+      onClick={onClick}
+      className={`p-2 rounded-lg focus:outline-none ${className}`}
+      disabled={disabled}
     >
       {title}
     </button>
   );
 };
+
+export default Button;
