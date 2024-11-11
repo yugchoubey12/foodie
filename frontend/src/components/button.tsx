@@ -1,28 +1,15 @@
-// frontend/src/components/Button.tsx
 import React from "react";
 
-type ButtonProps = {
+interface ButtonProps {
   title: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  className?: string;
-  type?: "button" | "submit" | "reset";
-  disabled?: boolean;
-};
+  type: "button" | "submit" | "reset" | undefined;
+  className: string;
+  disabled: boolean;
+}
 
-const Button: React.FC<ButtonProps> = ({
-  title,
-  onClick,
-  className,
-  type = "button",
-  disabled = false,
-}) => {
+const Button = ({ title, type, className, disabled }: ButtonProps) => {
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`p-2 rounded-lg focus:outline-none ${className}`}
-      disabled={disabled}
-    >
+    <button type={type} className={className} disabled={disabled}>
       {title}
     </button>
   );
