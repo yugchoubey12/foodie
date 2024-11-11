@@ -1,9 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthenticationProvider } from './context/AuthenticationContext';
-import Landing from './pages/Landing';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthenticationProvider } from "./context/AuthenticationContext";
+import Landing from "./pages/Landing";
+import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -17,6 +17,6 @@ const App = () => {
       </Router>
     </AuthenticationProvider>
   );
-}
+};
 
 export default App;
