@@ -1,31 +1,47 @@
-// src/context/AuthenticationContext.tsx
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from "react";
 
-// Define the context type
-type AuthContextType = {
-  isAuthenticated: boolean;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-  onLogin: (data: { email: string, password: string }) => void;
-};
+export interface AUTH_TYPE {
+  loading: boolean;
+  onLogin: (data: { email: string; password: string }) => void;
+  onSignup: (data: { email: string; password: string }) => void;
+}
 
-export const AuthenticationContext = createContext<AuthContextType | undefined>(undefined);
+const AuthenticationContext = createContext<AUTH_TYPE | null>(null);
 
-// This will wrap your app and provide auth-related state and methods
-export const AuthenticationProvider: React.FC = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
+  const [loading, setLoading] = useState(false);
 
-  const onLogin = (data: { email: string, password: string }) => {
-    // Simple login check - replace with real API call
-    if (data.email === 'admin@example.com' && data.password === 'password') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('token', 'fake-token');  // Save token in sessionStorage
-      sessionStorage.setItem('email', data.email);   // Save email for further use
-    }
+  const onLogin = async (data: { email: string; password: string }) => {
+    setLoading(true);
+    // Simulate an API call
+    setTimeout(() => {
+      sessionStorage.setItem("token", "dummy_token");
+      sessionStorage.setItem("email", data.email);
+      setLoading(false);
+      alert("Login successful!");
+    }, 1000);
+  };
+
+  const onSignup = async (data: { email: string; password: string }) => {
+    setLoading(true);
+    // Simulate an API call
+    setTimeout(() => {
+      alert("Signup successful!");
+      setLoading(false);
+    }, 1000);
   };
 
   return (
-    <AuthenticationContext.Provider value={{ isAuthenticated, setIsAuthenticated, onLogin }}>
+    <AuthenticationContext.Provider value={{ loading, onLogin, onSignup }}>
       {children}
     </AuthenticationContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthenticationContext);
+  if (!context) {
+    throw new Error("useAuth must be used within a AuthenticationProvider");
+  }
+  return context;
 };
